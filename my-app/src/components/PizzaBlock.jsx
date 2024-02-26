@@ -1,26 +1,47 @@
 import React, { useState } from "react";
-
-function PizzaBlock({ title, price }) {
+import { v4 as uuidv4 } from "uuid";
+function PizzaBlock({
+  title,
+  price,
+  imageUrl,
+  sizes,
+  types,
+  category,
+  rating,
+}) {
   const [pizzaCount, setPizzaCount] = useState(0);
+  const [activeType, setActiveType] = useState(0);
+  const [activeSize, setActiveSize] = useState(0);
+  const typesName = ["тонкое", "традиционное"];
+
   return (
     <div>
       {" "}
       <div className="pizza-block">
-        <img
-          className="pizza-block__image"
-          src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-          alt="Pizza"
-        />
+        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
-            <li className="active">тонкое</li>
-            <li>традиционное</li>
+            {types.map((elem) => (
+              <li
+                key={uuidv4()}
+                className={activeType === elem ? "active" : ""}
+                onClick={() => setActiveType(elem)}
+              >
+                {typesName[elem]}
+              </li>
+            ))}
           </ul>
           <ul>
-            <li className="active">26 см.</li>
-            <li>30 см.</li>
-            <li>40 см.</li>
+            {sizes.map((elem, i) => (
+              <li
+                key={uuidv4()}
+                className={activeSize === i ? "active" : ""}
+                onClick={() => setActiveSize(i)}
+              >
+                {elem} см.
+              </li>
+            ))}
           </ul>
         </div>
         <div className="pizza-block__bottom">
