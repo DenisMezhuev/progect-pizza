@@ -8,6 +8,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: 650px) {
+      flex-direction: column;
+      .header__cart {
+        margin-top: 20px;
+      }
+    }
+    @media (max-width: 390px) {
+      .header__logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        img {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   &__logo {

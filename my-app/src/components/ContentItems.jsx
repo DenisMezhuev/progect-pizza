@@ -10,6 +10,7 @@ function ContentItems() {
       .then((response) => response.json())
       .then((date) => setPizzas(date))
       .catch((e) => console.log(e));
+    window.scrollTo(0, 0);
   }, []);
   return (
     <div className="content__items">

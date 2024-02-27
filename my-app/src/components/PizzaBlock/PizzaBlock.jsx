@@ -16,7 +16,7 @@ function PizzaBlock({
   const typesName = ["тонкое", "традиционное"];
 
   return (
-    <div>
+    <div className="pizza-block-wrapper">
       {" "}
       <div className="pizza-block">
         <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
