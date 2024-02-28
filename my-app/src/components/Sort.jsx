@@ -1,15 +1,35 @@
-import React from "react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { ContextType } from "../pages/Home";
 
 function Sort() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
+  const funcSetContextType = useContext(ContextType);
   const list = ["популярности", "цене", "алфавиту"];
+
+  const listFunc = (i) => {
+    let resultType = "";
+    switch (i) {
+      case 0:
+        resultType = "rating";
+        break;
+      case 1:
+        resultType = "price";
+        break;
+      case 2:
+        resultType = "title";
+        break;
+      default:
+        return resultType;
+    }
+    return resultType;
+  };
 
   const onClickListItem = (i) => {
     setSelected(i);
     setOpen((open) => !open);
+    funcSetContextType(listFunc(i));
   };
 
   return (
@@ -33,9 +53,6 @@ function Sort() {
       {open && (
         <div className="sort__popup">
           <ul>
-            {/* <li className="active">популярности</li>
-            <li>цене</li>
-            <li>алфавиту</li> */}
             {list.map((elem, i) => (
               <li
                 key={uuidv4()}

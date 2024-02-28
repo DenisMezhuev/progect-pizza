@@ -5,6 +5,7 @@ import CategoriesLi from "./CategoriesLi";
 function Categories() {
   const [activeIndex, setActiveIndex] = useState(0);
   const categories = [
+    "Все",
     "Мясные",
     "Вегетарианская",
     "Гриль",
