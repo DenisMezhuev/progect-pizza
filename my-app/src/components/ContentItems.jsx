@@ -1,38 +1,82 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useRef } from "react";
+import axios from "axios";
+import qs from "qs";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import PizzaBlock from "./PizzaBlock/PizzaBlock";
 import Skeleton from "./PizzaBlock/Skeleton";
-import { ContextId } from "../pages/Home";
-import { ContextValueInput } from "../App";
+import { setFilters } from "./redux/slices/filterSlice";
+import { fetchPizzas } from "./redux/slices/pizzasSlice";
 
 function ContentItems() {
-  const [pizzas, setPizzas] = useState([]);
-  const { categoriesId, sortType, currentPage } = useContext(ContextId);
-  const searchValue = useContext(ContextValueInput);
-  console.log(searchValue);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { pageCount, categoryId, sort, searchValue } = useSelector(
+    (state) => state.filter
+  );
+  const { items, status } = useSelector((state) => state.pizzas);
 
   const categoriesIndex =
-    categoriesId - 1 >= 0 ? `category=${categoriesId - 1}` : "";
+    categoryId - 1 >= 0 ? `category=${categoryId - 1}` : "";
 
   const search = searchValue ? `&search=${searchValue}` : "";
-  const pageLimit = `page=${currentPage}&limit=${4}&`;
-  useEffect(() => {
-    fetch(
-      `https://65dc5231e7edadead7eb99a6.mockapi.io/items?${pageLimit}${categoriesIndex}&sortBy=${sortType}&order=desc${search}`
-    )
-      .then((response) => response.json())
-      .then((date) => setPizzas(date))
-      .catch((e) => console.log(e));
-    window.scrollTo(0, 0);
-  }, [categoriesId, sortType, searchValue, currentPage]);
+  const pageLimit = `page=${pageCount}&limit=${4}&`;
+  const isSearch = useRef(false);
+  const isMount = useRef(false);
+  const list = ["rating", "price", "title"];
 
-  //            .filter((elem) =>elem.title.toLowerCase().includes(searchValue.toLowerCase()))
+  const getPizzas = async () => {
+    dispatch(fetchPizzas({ categoriesIndex, pageLimit, sort, search }));
+  };
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      const sortV = list.find((elem) => elem === params.sort);
+
+      dispatch(
+        setFilters({
+          ...params,
+          sortV,
+        })
+      );
+      isSearch.current = true;
+    }
+  }, []);
+  useEffect(() => {
+    getPizzas();
+    isSearch.current = false;
+  }, [categoryId, sort, searchValue, pageCount]);
+
+  useEffect(() => {
+    if (isMount.current) {
+      const queryString = qs.stringify({
+        sort,
+        categoryId,
+        pageCount,
+      });
+      console.log(queryString);
+      navigate(`?${queryString}`);
+    }
+    isMount.current = true;
+  }, [categoryId, sort, searchValue, pageCount]);
+  const pizzas = items.map((elem) => <PizzaBlock key={uuidv4()} {...elem} />);
+  const skeleton = [...new Array(6)].map((elem) => <Skeleton key={uuidv4()} />);
   return (
-    <div className="content__items">
-      {pizzas.length
-        ? pizzas.map((elem) => <PizzaBlock key={uuidv4()} {...elem} />)
-        : [...new Array(6)].map((elem) => <Skeleton key={uuidv4()} />)}
-    </div>
+    <>
+      {status === "error" ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка</h2>
+          <p>Не удалось получить Пиццы</p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading" ? skeleton : pizzas}
+        </div>
+      )}
+    </>
   );
 }
 

@@ -1,13 +1,14 @@
-import { useContext, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ContextType } from "../pages/Home";
+import { useDispatch } from "react-redux";
+import { setSort } from "./redux/slices/filterSlice";
 
 function Sort() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
-  const funcSetContextType = useContext(ContextType);
   const list = ["популярности", "цене", "алфавиту"];
-
+  const sortRef = useRef();
+  const dispatch = useDispatch();
   const listFunc = (i) => {
     let resultType = "";
     switch (i) {
@@ -23,17 +24,29 @@ function Sort() {
       default:
         return resultType;
     }
+
     return resultType;
   };
 
   const onClickListItem = (i) => {
     setSelected(i);
     setOpen((open) => !open);
-    funcSetContextType(listFunc(i));
+    dispatch(setSort(listFunc(i)));
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setOpen(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => document.body.removeEventListener("click", handleClickOutside);
+  }, []);
+  console.log(sortRef);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
