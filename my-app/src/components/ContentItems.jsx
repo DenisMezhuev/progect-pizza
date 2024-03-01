@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import axios from "axios";
 import qs from "qs";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import PizzaBlock from "./PizzaBlock/PizzaBlock";
 import Skeleton from "./PizzaBlock/Skeleton";
@@ -62,7 +61,11 @@ function ContentItems() {
     }
     isMount.current = true;
   }, [categoryId, sort, searchValue, pageCount]);
-  const pizzas = items.map((elem) => <PizzaBlock key={uuidv4()} {...elem} />);
+  const pizzas = items.map((elem) => (
+    <Link to={`pizza/${elem.id}`} key={uuidv4()}>
+      <PizzaBlock {...elem} />
+    </Link>
+  ));
   const skeleton = [...new Array(6)].map((elem) => <Skeleton key={uuidv4()} />);
   return (
     <>

@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import Layout from "./components/Layout";
-import { useState } from "react";
+import FullPizza from "./pages/FullPizza";
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="pizza/:id" element={<FullPizza/>}/>
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
