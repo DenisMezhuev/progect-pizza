@@ -73,7 +73,7 @@ const ContentItems: React.FC = () => {
     isMount.current = true;
   }, [categoryId, sort, searchValue, pageCount]);
 
-  const pizzas = items.map((elem: any) => (
+  const pizzas = items.map((elem) => (
     <PizzaBlock key={uuidv4()} {...elem} />
   ));
   const skeleton = [...new Array(6)].map((elem) => <Skeleton key={uuidv4()} />);

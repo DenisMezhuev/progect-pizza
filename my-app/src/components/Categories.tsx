@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import CategoriesLi from "./CategoriesLi";
 
-const Categories: React.FC = () => {
+const Categories: React.FC = memo(() => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const categories: string[] = [
@@ -30,6 +30,6 @@ const Categories: React.FC = () => {
       </ul>
     </div>
   );
-};
+});
 
 export default Categories;
