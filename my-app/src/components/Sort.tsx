@@ -1,25 +1,32 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch } from "react-redux";
-import { setSort } from "./redux/slices/filterSlice";
 
-function Sort() {
+import { setSort } from "./redux/slices/filterSlice";
+import { ESort } from "./redux/slices/filterSlice";
+import { useAppDispatch } from "./redux/store";
+type TPopupClick = MouseEvent & {
+  composedPath(): Node[];
+};
+type TListFunc<T> = (i: number) => T;
+
+const Sort: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
   const list = ["популярности", "цене", "алфавиту"];
-  const sortRef = useRef();
-  const dispatch = useDispatch();
-  const listFunc = (i) => {
-    let resultType = "";
+  const sortRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+
+  const listFunc: TListFunc<ESort> = (i) => {
+    let resultType: ESort = ESort.RATING;
     switch (i) {
       case 0:
-        resultType = "rating";
+        resultType = ESort.RATING;
         break;
       case 1:
-        resultType = "price";
+        resultType = ESort.PRICE;
         break;
       case 2:
-        resultType = "title";
+        resultType = ESort.TITLE;
         break;
       default:
         return resultType;
@@ -28,15 +35,16 @@ function Sort() {
     return resultType;
   };
 
-  const onClickListItem = (i) => {
+  const onClickListItem = (i: number) => {
     setSelected(i);
     setOpen((open) => !open);
     dispatch(setSort(listFunc(i)));
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as TPopupClick;
+      if (sortRef.current && !_event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
     };
@@ -44,7 +52,7 @@ function Sort() {
 
     return () => document.body.removeEventListener("click", handleClickOutside);
   }, []);
-  console.log(sortRef);
+
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
@@ -80,6 +88,6 @@ function Sort() {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

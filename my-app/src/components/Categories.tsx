@@ -3,9 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import CategoriesLi from "./CategoriesLi";
 
-function Categories() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const categories = [
+const Categories: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  const categories: string[] = [
     "Все",
     "Мясные",
     "Вегетарианская",
@@ -29,6 +30,6 @@ function Categories() {
       </ul>
     </div>
   );
-}
+};
 
 export default Categories;

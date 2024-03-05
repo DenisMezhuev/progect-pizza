@@ -1,36 +1,48 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addItem } from "../redux/slices/cartSlice";
-
+import { TCartItem, addItem } from "../redux/slices/cartSlice";
 import { v4 as uuidv4 } from "uuid";
-function PizzaBlock({
+import { RootState } from "../redux/store";
+import { Link } from "react-router-dom";
+
+type TPizzaBlockProps = {
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+  id: string;
+  category: string;
+  rating: number;
+};
+
+const PizzaBlock: React.FC<TPizzaBlockProps> = ({
   title,
   price,
   imageUrl,
   sizes,
   types,
   id,
-  category,
-  rating,
-}) {
-  const [activeType, setActiveType] = useState(0);
-  const [activeSize, setActiveSize] = useState(0);
-  const typesName = ["тонкое", "традиционное"];
+}) => {
+  const [activeType, setActiveType] = useState<number>(0);
+  const [activeSize, setActiveSize] = useState<number>(0);
+  const typesName: string[] = ["тонкое", "традиционное"];
   const dispatch = useDispatch();
-  const cartItem = useSelector((state) =>
+  const cartItem = useSelector((state: RootState) =>
     state.cart.items.find((obj) => obj.id === id)
   );
 
   const addedCount = cartItem ? cartItem.count : 0;
 
   const onClickAdd = () => {
-    const item = {
+    const item: TCartItem = {
       id,
       title,
       imageUrl,
       price,
       type: typesName[activeType],
       size: sizes[activeSize],
+      count: 0,
     };
     dispatch(addItem(item));
   };
@@ -39,11 +51,13 @@ function PizzaBlock({
     <div className="pizza-block-wrapper">
       {" "}
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-        <h4 className="pizza-block__title">{title}</h4>
+        <Link to={`pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+          <h4 className="pizza-block__title">{title}</h4>
+        </Link>
         <div className="pizza-block__selector">
           <ul>
-            {types.map((elem) => (
+            {types.map((elem: number) => (
               <li
                 key={uuidv4()}
                 className={activeType === elem ? "active" : ""}
@@ -54,7 +68,7 @@ function PizzaBlock({
             ))}
           </ul>
           <ul>
-            {sizes.map((elem, i) => (
+            {sizes.map((elem: number, i: number) => (
               <li
                 key={uuidv4()}
                 className={activeSize === i ? "active" : ""}
@@ -90,6 +104,6 @@ function PizzaBlock({
       </div>
     </div>
   );
-}
+};
 
 export default PizzaBlock;

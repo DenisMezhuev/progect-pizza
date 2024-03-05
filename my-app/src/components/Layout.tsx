@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 
-function Layout() {
+const Layout: React.FC = () => {
   return (
     <div className="wrapper">
       <Header />
@@ -11,6 +11,6 @@ function Layout() {
       </div>
     </div>
   );
-}
+};
 
 export default Layout;

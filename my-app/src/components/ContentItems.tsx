@@ -1,20 +1,26 @@
 import React, { useEffect, useRef } from "react";
 import qs from "qs";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import PizzaBlock from "./PizzaBlock/PizzaBlock";
 import Skeleton from "./PizzaBlock/Skeleton";
-import { setFilters } from "./redux/slices/filterSlice";
-import { fetchPizzas } from "./redux/slices/pizzasSlice";
+import {
+  ESort,
+  IFilterInitialState,
+  TSort,
+  setFilters,
+} from "./redux/slices/filterSlice";
+import { fetchPizzas, SearchPizzasParams } from "./redux/slices/pizzasSlice";
+import { RootState, useAppDispatch } from "./redux/store";
 
-function ContentItems() {
+const ContentItems: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { pageCount, categoryId, sort, searchValue } = useSelector(
-    (state) => state.filter
+    (state: RootState) => state.filter
   );
-  const { items, status } = useSelector((state) => state.pizzas);
+  const { items, status } = useSelector((state: RootState) => state.pizzas);
 
   const categoriesIndex =
     categoryId - 1 >= 0 ? `category=${categoryId - 1}` : "";
@@ -23,7 +29,7 @@ function ContentItems() {
   const pageLimit = `page=${pageCount}&limit=${4}&`;
   const isSearch = useRef(false);
   const isMount = useRef(false);
-  const list = ["rating", "price", "title"];
+  const list: string[] = ["rating", "price", "title"];
 
   const getPizzas = async () => {
     dispatch(fetchPizzas({ categoriesIndex, pageLimit, sort, search }));
@@ -31,16 +37,15 @@ function ContentItems() {
 
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
+      const params = qs.parse(
+        window.location.search.substring(1)
+      ) as unknown as IFilterInitialState;
 
-      const sortV = list.find((elem) => elem === params.sort);
-
-      dispatch(
-        setFilters({
-          ...params,
-          sortV,
-        })
-      );
+      const sort = list.find((elem) => elem === params.sort) as ESort;
+      if (sort) {
+        params.sort = sort;
+      }
+      dispatch(setFilters(params));
       isSearch.current = true;
     }
   }, []);
@@ -51,20 +56,25 @@ function ContentItems() {
 
   useEffect(() => {
     if (isMount.current) {
-      const queryString = qs.stringify({
-        sort,
-        categoryId,
-        pageCount,
-      });
+      const queryString = qs.stringify(
+        {
+          sort,
+          categoryId,
+          pageCount,
+        },
+        { skipNulls: true }
+      );
       console.log(queryString);
       navigate(`?${queryString}`);
     }
+    if (!window.location.search) {
+      dispatch(fetchPizzas({} as SearchPizzasParams));
+    }
     isMount.current = true;
   }, [categoryId, sort, searchValue, pageCount]);
-  const pizzas = items.map((elem) => (
-    <Link to={`pizza/${elem.id}`} key={uuidv4()}>
-      <PizzaBlock {...elem} />
-    </Link>
+
+  const pizzas = items.map((elem: any) => (
+    <PizzaBlock key={uuidv4()} {...elem} />
   ));
   const skeleton = [...new Array(6)].map((elem) => <Skeleton key={uuidv4()} />);
   return (
@@ -81,6 +91,6 @@ function ContentItems() {
       )}
     </>
   );
-}
+};
 
 export default ContentItems;

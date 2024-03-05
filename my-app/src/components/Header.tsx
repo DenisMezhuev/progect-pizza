@@ -1,14 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import logoSvg from "../assets/img/pizza-logo.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Search from "./Search/Search";
 import { selectCart } from "./redux/slices/cartSlice";
 
-function Header() {
+const Header: React.FC = () => {
   const { totalPrice, items } = useSelector(selectCart);
-  const count = items.reduce((sum, elem) => (sum += elem.count), 0);
-  const location = useLocation();
+
+  const count = items.reduce((sum: number, elem:any) => (sum += elem.count), 0);
   return (
     <div className="header">
       <div className="container">
@@ -61,6 +61,6 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 
 export default Header;
