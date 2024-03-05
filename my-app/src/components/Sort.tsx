@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { setSort } from "./redux/slices/filterSlice";
 import { ESort } from "./redux/slices/filterSlice";
-import { useAppDispatch } from "./redux/store";
+import { RootState, useAppDispatch } from "./redux/store";
+import { useSelector } from "react-redux";
 type TPopupClick = MouseEvent & {
   composedPath(): Node[];
 };
@@ -12,9 +13,15 @@ type TListFunc<T> = (i: number) => T;
 const Sort: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
-  const list = ["популярности", "цене", "алфавиту"];
   const sortRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
+  const { sort } = useSelector((state: RootState) => state.filter);
+  const list = ["популярности", "цене", "алфавиту"];
+  const listObj = {
+    rating: "популярности",
+    price: "цене",
+    title: "алфавиту",
+  };
 
   const listFunc: TListFunc<ESort> = (i) => {
     let resultType: ESort = ESort.RATING;
@@ -69,7 +76,7 @@ const Sort: React.FC = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen((elem) => !elem)}>{list[selected]}</span>
+        <span onClick={() => setOpen((elem) => !elem)}>{listObj[sort]}</span>
       </div>
       {open && (
         <div className="sort__popup">

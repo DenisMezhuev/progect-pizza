@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import qs from "qs";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import PizzaBlock from "./PizzaBlock/PizzaBlock";
 import Skeleton from "./PizzaBlock/Skeleton";
 import {
   ESort,
   IFilterInitialState,
-  TSort,
   setFilters,
 } from "./redux/slices/filterSlice";
 import { fetchPizzas, SearchPizzasParams } from "./redux/slices/pizzasSlice";
@@ -64,6 +63,7 @@ const ContentItems: React.FC = () => {
         },
         { skipNulls: true }
       );
+
       console.log(queryString);
       navigate(`?${queryString}`);
     }
@@ -73,9 +73,7 @@ const ContentItems: React.FC = () => {
     isMount.current = true;
   }, [categoryId, sort, searchValue, pageCount]);
 
-  const pizzas = items.map((elem) => (
-    <PizzaBlock key={uuidv4()} {...elem} />
-  ));
+  const pizzas = items.map((elem) => <PizzaBlock key={uuidv4()} {...elem} />);
   const skeleton = [...new Array(6)].map((elem) => <Skeleton key={uuidv4()} />);
   return (
     <>

@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import CategoriesLi from "./CategoriesLi";
 
-const Categories: React.FC = memo(() => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
 
+const Categories: React.FC = memo(() => {
+  
   const categories: string[] = [
     "Все",
     "Мясные",
@@ -21,8 +21,6 @@ const Categories: React.FC = memo(() => {
         {categories.map((elem, index) => (
           <CategoriesLi
             key={uuidv4()}
-            setActiveIndex={setActiveIndex}
-            activeIndex={activeIndex}
             elem={elem}
             index={index}
           />

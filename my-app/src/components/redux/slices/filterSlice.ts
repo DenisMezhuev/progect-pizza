@@ -12,12 +12,14 @@ export interface IFilterInitialState {
   pageCount: number;
   categoryId: number;
   sort: TSort;
+
 }
 const initialState: IFilterInitialState = {
   searchValue: "",
   pageCount: 1,
   categoryId: 0,
   sort: ESort.RATING,
+
 };
 
 export const filterSlice = createSlice({

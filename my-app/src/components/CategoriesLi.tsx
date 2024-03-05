@@ -1,26 +1,21 @@
 import React from "react";
 import { setCategoryId } from "./redux/slices/filterSlice";
-import { useAppDispatch } from "./redux/store";
+import { RootState, useAppDispatch } from "./redux/store";
+import { useSelector } from "react-redux";
 type TCategoriesLi = {
-  activeIndex: number;
-  setActiveIndex: (index: number) => void;
   elem: string;
   index: number;
 };
 type TOnClickContextIndex = (index: number) => void;
-const CategoriesLi: React.FC<TCategoriesLi> = ({
-  activeIndex,
-  setActiveIndex,
-  elem,
-  index,
-}) => {
+
+const CategoriesLi: React.FC<TCategoriesLi> = ({ elem, index }) => {
   const dispatch = useAppDispatch();
+  const { categoryId } = useSelector((state: RootState) => state.filter);
 
   const ActiveIndex = () => {
-    return activeIndex === index ? "active" : "";
+    return categoryId === index ? "active" : "";
   };
   const onClickContextIndex: TOnClickContextIndex = (index) => {
-    setActiveIndex(index);
     dispatch(setCategoryId(index));
   };
   return (

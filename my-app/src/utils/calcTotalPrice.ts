@@ -1,4 +1,4 @@
-import React from "react";
+
 import { TCartItem } from "../components/redux/slices/cartSlice";
 
 const calcTotalPrice = (items: TCartItem[]) => {
