@@ -63,8 +63,6 @@ const ContentItems: React.FC = () => {
         },
         { skipNulls: true }
       );
-
-      console.log(queryString);
       navigate(`?${queryString}`);
     }
     if (!window.location.search) {
