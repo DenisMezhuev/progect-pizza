@@ -10,7 +10,7 @@ const FullPizza: React.FunctionComponent = () => {
   }
 
   const { id } = useParams();
-  console.log(id);
+
   const [pizza, setPizza] = useState<IPizza>();
   const navigate = useNavigate();
   useEffect(() => {
