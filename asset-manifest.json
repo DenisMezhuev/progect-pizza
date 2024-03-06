@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/DenisMezhuev/progect-pizza/static/css/main.188810e0.css",
+    "main.js": "/DenisMezhuev/progect-pizza/static/js/main.89435a8c.js",
+    "static/js/720.69532a17.chunk.js": "/DenisMezhuev/progect-pizza/static/js/720.69532a17.chunk.js",
+    "static/media/empty-cart.png": "/DenisMezhuev/progect-pizza/static/media/empty-cart.db905d1f4b063162f25b.png",
+    "static/media/pizza-logo.svg": "/DenisMezhuev/progect-pizza/static/media/pizza-logo.f21d74a3a7d2f497da8957bc05bb0589.svg",
+    "index.html": "/DenisMezhuev/progect-pizza/index.html",
+    "main.188810e0.css.map": "/DenisMezhuev/progect-pizza/static/css/main.188810e0.css.map",
+    "main.89435a8c.js.map": "/DenisMezhuev/progect-pizza/static/js/main.89435a8c.js.map",
+    "720.69532a17.chunk.js.map": "/DenisMezhuev/progect-pizza/static/js/720.69532a17.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.188810e0.css",
+    "static/js/main.89435a8c.js"
+  ]
+}
