@@ -1,4 +1,4 @@
-import React, { useEffect,  useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import logoSvg from "../assets/img/pizza-logo.svg";
 import { Link, useLocation } from "react-router-dom";
@@ -10,10 +10,7 @@ const Header: React.FC = () => {
   const isMounted = useRef(false);
   const location = useLocation();
 
-  const count = items.reduce(
-    (sum: number, elem) => (sum += elem.count),
-    0
-  );
+  const count = items.reduce((sum: number, elem) => (sum += elem.count), 0);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -25,7 +22,7 @@ const Header: React.FC = () => {
   return (
     <div className="header">
       <div className="container">
-        <Link to="/">
+        <Link to="/project-pizza">
           <div className="header__logo">
             <img width="38" src={logoSvg} alt="Pizza logo" />
             <div>
@@ -37,7 +34,7 @@ const Header: React.FC = () => {
 
         {location.pathname !== "/cart" && <Search />}
         <div className="header__cart">
-          <Link to="/cart" className="button button--cart">
+          <Link to="/project-pizza/cart" className="button button--cart">
             <span>{totalPrice} ₽</span>
             <div className="button__delimiter"></div>
             <svg
