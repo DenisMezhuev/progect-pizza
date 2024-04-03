@@ -13,6 +13,7 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
   }
 }
+
 .icon {
   width: 22px;
   height: 22px;
@@ -20,4 +21,16 @@
   position: absolute;
   left: 14px;
   top: 12px;
+}
+@media (max-width: 1100px) {
+  .input {
+    width: 300px;
+  }
+}
+
+@media (max-width: 390px) {
+  .input {
+    width: 250px;
+    font-size: 10px;
+  }
 }

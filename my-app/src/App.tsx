@@ -1,4 +1,4 @@
-import  { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import "./scss/app.scss";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
@@ -13,16 +13,16 @@ function App() {
     <div className="App">
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="project-pizza" element={<Home />} />
           <Route
-            path="cart"
+            path="/project-pizza/cart"
             element={
               <Suspense fallback="Loading....">
                 <Cart />
               </Suspense>
             }
           />
-          <Route path="pizza/:id" element={<FullPizza />} />
+          <Route path="project-pizza/pizza/:id" element={<FullPizza />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

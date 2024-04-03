@@ -30,7 +30,10 @@ const CartItems: React.FC<TCartItemsProps> = ({
   const dispatch = useAppDispatch();
   const onClickPlus = () => dispatch(addItem({ id } as TCartItem));
   const onClickMinus = () => dispatch(minusItem(id));
-  const onClickRemove = () => dispatch(removeItem(id));
+  const onClickRemove = () => {
+    dispatch(removeItem(id));
+    dispatch(minusItem(id));
+  };
   return (
     <div className="cart__item">
       <div className="cart__item-img">
